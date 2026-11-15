@@ -34,6 +34,7 @@ public final class Defaults {
     /** No storm beyond vanilla's. */
     public static final StormProvider STORM = new StormProvider() {
         public float heavy(Level level) { return 0f; }
+        public java.util.List<dev.phi.aethryon.api.StormCell> cells(Level level, double x, double z, double range) { return java.util.List.of(); }
         public float fog() { return 0f; }
         public float drying(Level level, BlockPos pos) { return Math.max(0.2f, Math.min(2.5f, 0.35f + (level.getBiome(pos).value().getBaseTemperature() * 20f - 4f) / 20f)); }
         public float serverWet() { return Float.NaN; }

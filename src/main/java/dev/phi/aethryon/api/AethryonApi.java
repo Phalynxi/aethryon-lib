@@ -13,6 +13,12 @@ public final class AethryonApi {
     public static CloudModel clouds() { return Services.get(CloudModel.class, Clouds.DEFAULT); }
     public static WetnessProvider wetness() { return Services.get(WetnessProvider.class, Defaults.WETNESS); }
     public static StormProvider storm() { return Services.get(StormProvider.class, Defaults.STORM); }
+    /** The rain at a place: vanilla's rain level, or the downpour under a storm cell (cells rain even when the weather is clear). */
+    public static float rainAt(net.minecraft.world.level.Level level, double x, double z) {
+        float best = 0f;
+        for (var c : storm().cells(level, x, z, 0)) best = Math.max(best, c.at(x, z));
+        return Math.max(level.getRainLevel(1f), Math.min(1f, 1.4f * best));
+    }
     public static SeaProvider sea() { return Services.get(SeaProvider.class, Defaults.SEA); }
     public static WaterEvents waterEvents() { return Services.get(WaterEvents.class, Defaults.WATER_EVENTS); }
     /** The first air above the ground at a column, leaves not counted (works on the client). */
