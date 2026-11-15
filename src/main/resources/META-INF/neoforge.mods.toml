@@ -1,0 +1,24 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="MIT"
+issueTrackerURL="https://github.com/Phalynxi/phi-lib/issues"
+
+[[mods]]
+modId="philib"
+version="@VERSION@"
+displayName="Phi Lib"
+description='''A shared library for Phalynxi's mods: services that mods fill in and read (wind, clouds, wetness, disasters, the clock), a particle system, grid and field simulations, a settings API and worldgen helpers. Mods depend on it, not on each other.'''
+authors="Phalynxi"
+
+[[dependencies.philib]]
+modId="neoforge"
+type="required"
+versionRange="[21.1,)"
+ordering="NONE"
+side="BOTH"
+[[dependencies.philib]]
+modId="minecraft"
+type="required"
+versionRange="[1.21.1,1.22)"
+ordering="NONE"
+side="BOTH"
