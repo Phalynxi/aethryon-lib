@@ -1,12 +1,12 @@
-package dev.phi.lib.api;
+package dev.phi.aethryon.api;
 
-import dev.phi.lib.service.Services;
-import dev.phi.lib.world.Clouds;
-import dev.phi.lib.world.Defaults;
+import dev.phi.aethryon.service.Services;
+import dev.phi.aethryon.world.Clouds;
+import dev.phi.aethryon.world.Defaults;
 
 /** What the mods ask for. Every call has an answer: the best provider, or a plain default that works with vanilla alone. */
-public final class PhiApi {
-    private PhiApi() {}
+public final class AethryonApi {
+    private AethryonApi() {}
 
     public static ClockProvider clock() { return Services.get(ClockProvider.class, Defaults.CLOCK); }
     public static WindProvider wind() { return Services.get(WindProvider.class, Defaults.WIND); }

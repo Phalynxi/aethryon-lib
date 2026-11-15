@@ -1,4 +1,4 @@
-package dev.phi.lib.service;
+package dev.phi.aethryon.service;
 
 import java.util.ArrayList;
 import java.util.Comparator;

@@ -1,8 +1,8 @@
-package dev.phi.lib.world;
+package dev.phi.aethryon.world;
 
-import dev.phi.lib.api.ClockProvider;
-import dev.phi.lib.api.WetnessProvider;
-import dev.phi.lib.api.WindProvider;
+import dev.phi.aethryon.api.ClockProvider;
+import dev.phi.aethryon.api.WetnessProvider;
+import dev.phi.aethryon.api.WindProvider;
 import net.minecraft.world.phys.Vec3;
 
 /** What the services answer when no mod provides them: all of it works with vanilla alone. */

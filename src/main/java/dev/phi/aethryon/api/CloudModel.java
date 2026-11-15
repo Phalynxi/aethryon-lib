@@ -1,4 +1,4 @@
-package dev.phi.lib.api;
+package dev.phi.aethryon.api;
 
 import net.minecraft.world.level.Level;
 

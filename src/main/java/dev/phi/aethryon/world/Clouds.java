@@ -1,6 +1,6 @@
-package dev.phi.lib.world;
+package dev.phi.aethryon.world;
 
-import dev.phi.lib.api.CloudModel;
+import dev.phi.aethryon.api.CloudModel;
 
 import net.minecraft.world.level.Level;
 
