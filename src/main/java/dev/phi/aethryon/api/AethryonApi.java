@@ -12,6 +12,13 @@ public final class AethryonApi {
     public static WindProvider wind() { return Services.get(WindProvider.class, Defaults.WIND); }
     public static CloudModel clouds() { return Services.get(CloudModel.class, Clouds.DEFAULT); }
     public static WetnessProvider wetness() { return Services.get(WetnessProvider.class, Defaults.WETNESS); }
+    /** Tell everyone that listens that the world was disturbed (see {@link Disturbance}). */
+    public static void disturb(net.minecraft.world.level.Level level, Disturbance d) {
+        for (var l : Services.all(DisturbanceListener.class)) {
+            try { l.on(level, d); } catch (RuntimeException e) { dev.phi.aethryon.Aethryon.LOG.error("A disturbance listener failed", e); }   // one listener must not stop the others
+        }
+    }
+
     /** Every mod that runs disasters contributes: the lists are put together. */
     public static java.util.List<Funnel> funnels() {
         var all = Services.all(DisasterView.class);

@@ -1,4 +1,5 @@
-plugins { id 'java'; id 'net.neoforged.moddev' version '2.0.148' }
+plugins { id 'java'; id 'maven-publish'; id 'net.neoforged.moddev' version '2.0.148' }
+group = 'dev.phi'
 version = '0.1.0'
 base { archivesName = 'aethryon' }
 tasks.withType(Jar).configureEach { archiveVersion = '' }   // the jar is named aethryon.jar; the version lives in neoforge.mods.toml
@@ -10,4 +11,10 @@ neoForge {
 processResources {
     inputs.property 'v', project.version
     filesMatching('META-INF/neoforge.mods.toml') { filter { line -> line.replace('@VERSION@', project.version.toString()) } }
+}
+
+java { withSourcesJar() }
+publishing {
+    publications { lib(MavenPublication) { from components.java; artifactId = 'aethryon' } }
+    repositories { mavenLocal() }
 }
