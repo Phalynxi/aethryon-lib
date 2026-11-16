@@ -36,6 +36,8 @@ public final class PrismApi {
         }
     }
 
+    /** The wave field of the water around the camera, or null. */
+    public static WaveField waveField() { return Services.get(WaveField.class, null); }
     /** Every mod that simulates water on a grid contributes: the lists are put together. */
     public static java.util.List<WaterSurface> waterSurfaces() {
         var all = Services.all(WaterSurfaces.class);

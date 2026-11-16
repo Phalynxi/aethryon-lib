@@ -11,7 +11,7 @@ public final class ShallowWater {
     /** Something that pushes the water every step: a spinning vortex, a boat's wake, a rain of drops. */
     public interface Forcing { void apply(ShallowWater g, float dt); }
 
-    public final int n; public final float cell; public final double ox, oz;
+    public final int n; public final float cell; public double ox, oz;
     /** Surface height above rest, in blocks; flow in blocks per second (x, z). */
     public final float[] eta, u, w;
     public final boolean[] solid;
@@ -27,6 +27,17 @@ public final class ShallowWater {
         u2 = new float[n * n]; w2 = new float[n * n]; e2 = new float[n * n];
     }
 
+    /** Slide the window so it is centred on (cx, cz), by whole cells: the water that is still in the window keeps moving, what comes into it is still. */
+    public void recentre(double cx, double cz) {
+        int di = (int) Math.round((cx - n * cell / 2.0 - ox) / cell), dj = (int) Math.round((cz - n * cell / 2.0 - oz) / cell);
+        if (di == 0 && dj == 0) return;
+        if (Math.abs(di) >= n || Math.abs(dj) >= n) { java.util.Arrays.fill(eta, 0f); java.util.Arrays.fill(u, 0f); java.util.Arrays.fill(w, 0f); }
+        else for (float[] a : new float[][] {eta, u, w}) {
+            System.arraycopy(a, 0, e2, 0, a.length); java.util.Arrays.fill(a, 0f);
+            for (int j = 0; j < n; j++) { int sj = j + dj; if (sj < 0 || sj >= n) continue; for (int i = 0; i < n; i++) { int si = i + di; if (si >= 0 && si < n) a[i + j * n] = e2[si + sj * n]; } }
+        }
+        ox += di * cell; oz += dj * cell;
+    }
     public double worldX(int i) { return ox + (i + 0.5) * cell; }
     public double worldZ(int j) { return oz + (j + 0.5) * cell; }
     public boolean inside(double x, double z) { return x >= ox && z >= oz && x < ox + n * cell && z < oz + n * cell; }
