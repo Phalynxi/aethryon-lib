@@ -1,12 +1,12 @@
 plugins { id 'java'; id 'maven-publish'; id 'net.neoforged.moddev' version '2.0.148' }
 group = 'dev.phi'
 version = '0.1.0'
-base { archivesName = 'aethryon' }
-tasks.withType(Jar).configureEach { archiveVersion = '' }   // the jar is named aethryon.jar; the version lives in neoforge.mods.toml
+base { archivesName = 'prismlib' }
+tasks.withType(Jar).configureEach { archiveVersion = '' }   // the jar is named prismlib.jar; the version lives in neoforge.mods.toml
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 neoForge {
     version = neo_version
-    mods { aethryon { sourceSet sourceSets.main } }
+    mods { prismlib { sourceSet sourceSets.main } }
 }
 processResources {
     inputs.property 'v', project.version
@@ -15,6 +15,6 @@ processResources {
 
 java { withSourcesJar() }
 publishing {
-    publications { lib(MavenPublication) { from components.java; artifactId = 'aethryon' } }
+    publications { lib(MavenPublication) { from components.java; artifactId = 'prismlib' } }
     repositories { mavenLocal() }
 }

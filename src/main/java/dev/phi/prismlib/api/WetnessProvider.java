@@ -1,4 +1,4 @@
-package dev.phi.aethryon.api;
+package dev.phi.prismlib.api;
 
 import net.minecraft.world.entity.player.Player;
 

@@ -1,8 +1,8 @@
-package dev.phi.aethryon.api;
+package dev.phi.prismlib.api;
 
 /**
  * Something disturbed the world at a place: a step, a wheel on the ground, the wash of a rotor, a hull moving through, a blast, a splash. Whoever causes it sends one
- * ({@link AethryonApi#disturb}); whoever reacts (snow that is pressed down or blown away, sand and dust that rise, water that ripples, leaves that shake, particles) listens
+ * ({@link PrismApi#disturb}); whoever reacts (snow that is pressed down or blown away, sand and dust that rise, water that ripples, leaves that shake, particles) listens
  * ({@link DisturbanceListener}). The cause and the effect never need to know each other: a wheel from any mod makes tracks in the snow of any other.
  *
  * @param kind     what kind of disturbance

@@ -1,4 +1,4 @@
-package dev.phi.aethryon.particle;
+package dev.phi.prismlib.particle;
 
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

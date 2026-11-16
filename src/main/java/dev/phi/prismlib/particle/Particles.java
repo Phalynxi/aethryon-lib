@@ -1,11 +1,11 @@
-package dev.phi.aethryon.particle;
+package dev.phi.prismlib.particle;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.Tesselator;
 import com.mojang.blaze3d.vertex.VertexFormat;
-import dev.phi.aethryon.Aethryon;
+import dev.phi.prismlib.PrismLib;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.GameRenderer;
@@ -27,10 +27,10 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Aethryon's own particle engine: the pool, the tick and the drawing. Particles are made with {@link #spawn}, simulated every client tick by their kind's behaviour and drawn
+ * Prism Lib's own particle engine: the pool, the tick and the drawing. Particles are made with {@link #spawn}, simulated every client tick by their kind's behaviour and drawn
  * interpolated between ticks, all in one batch from the particle atlas right after the world's particles stage. Light comes from the world at the particle's block.
  */
-@EventBusSubscriber(modid = Aethryon.ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = PrismLib.ID, value = Dist.CLIENT)
 public final class Particles {
     private Particles() {}
     /** Most particles alive at once: new ones are refused beyond it (the oldest are not culled: they are nearly done anyway). */
@@ -62,7 +62,7 @@ public final class Particles {
             p.xo = p.x; p.yo = p.y; p.zo = p.z;
             if (p.age++ >= p.life) { p.dead = true; continue; }
             try { p.kind.behaviour.tick(p); }
-            catch (RuntimeException ex) { p.dead = true; Aethryon.LOG.error("A particle behaviour failed; that particle is dropped", ex); }
+            catch (RuntimeException ex) { p.dead = true; PrismLib.LOG.error("A particle behaviour failed; that particle is dropped", ex); }
         }
         POOL.removeIf(p -> p.dead);
     }

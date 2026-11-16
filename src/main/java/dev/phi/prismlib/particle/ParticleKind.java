@@ -1,4 +1,4 @@
-package dev.phi.aethryon.particle;
+package dev.phi.prismlib.particle;
 
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -6,7 +6,7 @@ import net.minecraft.util.RandomSource;
 
 /**
  * A kind of particle: how it is drawn (a billboard that faces the camera, or a square lying flat), what its sprites are, and how it behaves each tick.
- * A mod makes its kinds once; Aethryon owns every particle's simulation and drawing (nothing goes through Minecraft's particle engine).
+ * A mod makes its kinds once; Prism Lib owns every particle's simulation and drawing (nothing goes through Minecraft's particle engine).
  * The sprites come from a particle description file ({@code assets/<mod>/particles/<name>.json}) registered through Minecraft's loader, which only stitches the pictures into the particle atlas:
  * hand the set it gives you to {@link #sprites}.
  */

@@ -1,16 +1,16 @@
-package dev.phi.aethryon.world;
+package dev.phi.prismlib.world;
 
-import dev.phi.aethryon.api.SeaProvider;
-import dev.phi.aethryon.api.StormProvider;
-import dev.phi.aethryon.api.WaterEvents;
+import dev.phi.prismlib.api.SeaProvider;
+import dev.phi.prismlib.api.StormProvider;
+import dev.phi.prismlib.api.WaterEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.levelgen.Heightmap;
 
-import dev.phi.aethryon.api.ClockProvider;
-import dev.phi.aethryon.api.WetnessProvider;
-import dev.phi.aethryon.api.WindProvider;
+import dev.phi.prismlib.api.ClockProvider;
+import dev.phi.prismlib.api.WetnessProvider;
+import dev.phi.prismlib.api.WindProvider;
 import net.minecraft.world.phys.Vec3;
 
 /** What the services answer when no mod provides them: all of it works with vanilla alone. */
@@ -34,7 +34,7 @@ public final class Defaults {
     /** No storm beyond vanilla's. */
     public static final StormProvider STORM = new StormProvider() {
         public float heavy(Level level) { return 0f; }
-        public java.util.List<dev.phi.aethryon.api.StormCell> cells(Level level, double x, double z, double range) { return java.util.List.of(); }
+        public java.util.List<dev.phi.prismlib.api.StormCell> cells(Level level, double x, double z, double range) { return java.util.List.of(); }
         public float fog() { return 0f; }
         public float drying(Level level, BlockPos pos) { return Math.max(0.2f, Math.min(2.5f, 0.35f + (level.getBiome(pos).value().getBaseTemperature() * 20f - 4f) / 20f)); }
         public float serverWet() { return Float.NaN; }

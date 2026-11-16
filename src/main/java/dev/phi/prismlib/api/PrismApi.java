@@ -1,12 +1,12 @@
-package dev.phi.aethryon.api;
+package dev.phi.prismlib.api;
 
-import dev.phi.aethryon.service.Services;
-import dev.phi.aethryon.world.Clouds;
-import dev.phi.aethryon.world.Defaults;
+import dev.phi.prismlib.service.Services;
+import dev.phi.prismlib.world.Clouds;
+import dev.phi.prismlib.world.Defaults;
 
 /** What the mods ask for. Every call has an answer: the best provider, or a plain default that works with vanilla alone. */
-public final class AethryonApi {
-    private AethryonApi() {}
+public final class PrismApi {
+    private PrismApi() {}
 
     public static ClockProvider clock() { return Services.get(ClockProvider.class, Defaults.CLOCK); }
     public static WindProvider wind() { return Services.get(WindProvider.class, Defaults.WIND); }
@@ -26,7 +26,7 @@ public final class AethryonApi {
     /** Tell everyone that listens that the world was disturbed (see {@link Disturbance}). */
     public static void disturb(net.minecraft.world.level.Level level, Disturbance d) {
         for (var l : Services.all(DisturbanceListener.class)) {
-            try { l.on(level, d); } catch (RuntimeException e) { dev.phi.aethryon.Aethryon.LOG.error("A disturbance listener failed", e); }   // one listener must not stop the others
+            try { l.on(level, d); } catch (RuntimeException e) { dev.phi.prismlib.PrismLib.LOG.error("A disturbance listener failed", e); }   // one listener must not stop the others
         }
     }
 

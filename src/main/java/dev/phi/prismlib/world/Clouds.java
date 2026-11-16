@@ -1,6 +1,6 @@
-package dev.phi.aethryon.world;
+package dev.phi.prismlib.world;
 
-import dev.phi.aethryon.api.CloudModel;
+import dev.phi.prismlib.api.CloudModel;
 
 import net.minecraft.world.level.Level;
 

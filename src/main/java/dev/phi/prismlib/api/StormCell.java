@@ -1,4 +1,4 @@
-package dev.phi.aethryon.api;
+package dev.phi.prismlib.api;
 
 /**
  * A regional storm as it is right now: a place (world coordinates), how far it reaches, how strong it is at the middle (0 to 1) and which way it drifts (blocks per tick).
