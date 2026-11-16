@@ -19,6 +19,12 @@ public final class PrismApi {
         for (var c : storm().cells(level, x, z, 0)) best = Math.max(best, c.at(x, z));
         return Math.max(level.getRainLevel(1f), Math.min(1f, 1.4f * best));
     }
+    /** The snow surface's height at a point, or NaN: ask before placing something on snow. */
+    public static float snowHeight(net.minecraft.world.level.Level level, double x, double z) {
+        var all = Services.all(SnowSurfaceProvider.class);
+        for (var p : all) { float h = p.height(level, x, z); if (!Float.isNaN(h)) return h; }
+        return Float.NaN;
+    }
     public static SeaProvider sea() { return Services.get(SeaProvider.class, Defaults.SEA); }
     public static WaterEvents waterEvents() { return Services.get(WaterEvents.class, Defaults.WATER_EVENTS); }
     /** The first air above the ground at a column, leaves not counted (works on the client). */
@@ -30,6 +36,14 @@ public final class PrismApi {
         }
     }
 
+    /** Every mod that simulates water on a grid contributes: the lists are put together. */
+    public static java.util.List<WaterSurface> waterSurfaces() {
+        var all = Services.all(WaterSurfaces.class);
+        if (all.isEmpty()) return java.util.List.of();
+        if (all.size() == 1) return all.get(0).surfaces();
+        var out = new java.util.ArrayList<WaterSurface>(); for (var v : all) out.addAll(v.surfaces());
+        return out;
+    }
     /** Every mod that runs disasters contributes: the lists are put together. */
     public static java.util.List<Funnel> funnels() {
         var all = Services.all(DisasterView.class);
