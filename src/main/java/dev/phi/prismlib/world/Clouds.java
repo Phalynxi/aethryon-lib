@@ -36,7 +36,7 @@ public final class Clouds implements CloudModel {
     }
 
     /** How far the clouds have drifted along x and z: steadily east, wandering slowly north and south over hours (the same everywhere, from the world's time). */
-    public static double driftXAt(long gameTime, float pt) { double t = gameTime % 1_000_000L + pt; return t * 0.03 + 900.0 * Math.sin(t * 0.0000131); }
+    public static double driftXAt(long gameTime, float pt) { double t = gameTime % 1_000_000L + pt; return t * 0.12 + 900.0 * Math.sin(t * 0.0000131); }
     public static double driftZAt(long gameTime, float pt) { double t = gameTime % 1_000_000L + pt; return 1400.0 * Math.sin(t * 0.0000087 + 1.3) + 600.0 * Math.sin(t * 0.0000231); }
     /** How far the clouds have changed: they slowly form and fade (a full change takes about half a day). */
     public static float evolveAt(long gameTime, float pt) { return (float) (((gameTime % 1_000_000L) + pt) * 0.00008); }
