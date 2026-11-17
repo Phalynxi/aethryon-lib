@@ -22,6 +22,8 @@ public final class ThemedSettingsScreen extends Screen {
         public static final Theme SKY = new Theme("sky", 0xFF1D3552, 0xFF6B829C, 0xFFFFFFFF, 0xFFCFE0F2, 0xFF9DB8D4, 0xFFE8F2FC, 0xFFB5CBE2, 0x14000000, 0xFF35618F, 0xFF8FB4DC);
         /** Dusk: indigo with a warm glow. */
         public static final Theme DUSK = new Theme("dusk", 0xFFEDE8FA, 0xFF9C94BC, 0xFFFFF4E6, 0xFF171430, 0xFF3A3460, 0xFF2A2548, 0xFF5A5190, 0x1CFFFFFF, 0xFF6A5FA0, 0xFFC9B8F0);
+        /** Sun: gold and orange. */
+        public static final Theme SUN = new Theme("sun", 0xFF4A2408, 0xFF9A6A2A, 0xFFFFFFFF, 0xFFF3D88C, 0xFFD6A94F, 0xFFFFF1BF, 0xFFDDB45F, 0x16000000, 0xFF8A4A10, 0xFFE8A850);
         /** The hub: dark slate with a blue accent. */
         public static final Theme SLATE = new Theme("slate", 0xFFE6EAF2, 0xFF8B96A8, 0xFFF2F6FF, 0xFF141820, 0xFF2C3444, 0xFF222938, 0xFF4A566E, 0x1CFFFFFF, 0xFF53607A, 0xFFA9B6D0);
     }

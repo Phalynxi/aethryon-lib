@@ -45,12 +45,22 @@ public final class PrismHub {
         register(new Entry(modId, title, tagline, sprite(sprite), opener));
     }
 
-    /** A logo from a texture (square, any size). */
+    private static final java.util.Map<ResourceLocation, int[]> SIZES = new java.util.concurrent.ConcurrentHashMap<>();
+    private static int[] sizeOf(ResourceLocation tex) {
+        return SIZES.computeIfAbsent(tex, k -> {
+            try (var in = net.minecraft.client.Minecraft.getInstance().getResourceManager().open(k); var img = com.mojang.blaze3d.platform.NativeImage.read(in)) { return new int[] {img.getWidth(), img.getHeight()}; }
+            catch (java.io.IOException | RuntimeException e) { return new int[] {32, 32}; }
+        });
+    }
+
+    /** A logo from a texture: square, or a tall strip of square frames that is played round (about nine frames a second). */
     public static Logo texture(ResourceLocation tex) {
         return (g, x, y, size, alpha) -> {
+            int[] wh = sizeOf(tex); int w = Math.max(1, wh[0]), h = Math.max(1, wh[1]), frames = Math.max(1, h / w);
+            int f = frames > 1 ? (int) ((net.minecraft.Util.getMillis() / 110L) % frames) : 0;
             com.mojang.blaze3d.systems.RenderSystem.enableBlend();
             g.setColor(1f, 1f, 1f, alpha);
-            g.blit(tex, x, y, size, size, 0f, 0f, 1, 1, 1, 1);   // (the whole picture, scaled to the size)
+            g.blit(tex, x, y, size, size, 0f, (float) (f * w), w, w, w, h);
             g.setColor(1f, 1f, 1f, 1f);
         };
     }
