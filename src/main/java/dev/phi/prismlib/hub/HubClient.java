@@ -112,38 +112,74 @@ public final class HubClient {
 
     // ------------------------------------------------------------------ the screen
 
-    /** The list of mods with settings, in the game's own look: a title and a column of ordinary buttons, each with the mod's logo inside it and a line about it as its tooltip. */
+    /** The list of mods with settings, in one dark window of the same make as the mods' own: a row per mod with its logo, its name, how much there is to set, and an Open button. */
     public static final class HubScreen extends Screen {
+        private static final dev.phi.prismlib.settings.ThemedSettingsScreen.Theme T = dev.phi.prismlib.settings.ThemedSettingsScreen.Theme.SLATE;
+        private static final net.minecraft.resources.ResourceLocation WINDOW = sp("window"), BUTTON = sp("button"), BUTTON_HOVER = sp("button_hover"), BUTTON_GREEN = sp("button_green"), BUTTON_GREEN_HOVER = sp("button_green_hover");
+        private static net.minecraft.resources.ResourceLocation sp(String n) { return net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(PrismLib.ID, n + "_slate"); }
+        private static final int W = 360, ROW = 42;
         private final Screen parent;
+        private int px, py, ph;
 
-        public HubScreen(Screen parent) { super(Component.literal("Mod Settings")); this.parent = parent; }
+        public HubScreen(Screen parent) { super(Component.literal("Prism")); this.parent = parent; }
 
         @Override protected void init() {
-            int w = 220, x = width / 2 - w / 2, y = 36;
-            for (var e : PrismHub.visible()) {
-                final var entry = e;
-                Button b = new Button(x, y, w, 24, Component.literal(entry.title()), btn -> Minecraft.getInstance().setScreen(entry.opener().apply(this)), supplier -> supplier.get()) {
-                    @Override public void renderWidget(GuiGraphics g, int mx, int my, float pt) {
-                        super.renderWidget(g, mx, my, pt);
-                        entry.logo().draw(g, getX() + 4, getY() + 4, 16, 1f);
-                    }
-                    @Override protected void renderScrollingString(GuiGraphics g, net.minecraft.client.gui.Font font, int inset, int color) {
-                        g.drawString(font, getMessage(), getX() + 28, getY() + (getHeight() - 8) / 2, color);
-                    }
-                };
-                if (!entry.tagline().isBlank()) b.setTooltip(Tooltip.create(Component.literal(entry.tagline())));
-                addRenderableWidget(b);
-                y += 28;
-            }
-            addRenderableWidget(Button.builder(CommonComponents.GUI_DONE, b -> onClose()).bounds(width / 2 - 100, height - 27, 200, 20).build());
+            int rows = Math.max(1, PrismHub.visible().size());
+            ph = Math.min(height - 24, 40 + rows * (ROW + 4) + 52);
+            px = (width - W) / 2; py = (height - ph) / 2;
         }
 
         @Override public void onClose() { Minecraft.getInstance().setScreen(parent); }
 
+        private static boolean in(double mx, double my, int x, int y, int w, int h) { return mx >= x && mx < x + w && my >= y && my < y + h; }
+        private void dotted(GuiGraphics g, int x, int y, int w) { for (int i = 0; i + 2 <= w; i += 4) g.fill(x + i, y, x + i + 2, y + 1, T.dot()); }
+        private void button(GuiGraphics g, int x, int y, int w, String text, int mx, int my, boolean primary) {
+            boolean hov = in(mx, my, x, y, w, 20);
+            g.blitSprite(primary ? (hov ? BUTTON_GREEN_HOVER : BUTTON_GREEN) : (hov ? BUTTON_HOVER : BUTTON), x, y, w, 20);
+            g.drawString(font, text, x + (w - font.width(text)) / 2, y + 6, T.cream(), true);
+        }
+
+        private String info(PrismHub.Entry e) {
+            var cats = dev.phi.prismlib.settings.Settings.of(e.modId());
+            if (cats.isEmpty()) return e.tagline();
+            int n = 0; for (var c : cats) n += c.options().size();
+            return cats.size() + (cats.size() == 1 ? " category" : " categories") + "  -  " + n + (n == 1 ? " setting" : " settings");
+        }
+
         @Override public void render(GuiGraphics g, int mx, int my, float pt) {
-            super.render(g, mx, my, pt);
-            g.drawCenteredString(font, title, width / 2, 15, 0xFFFFFF);
-            if (PrismHub.visible().isEmpty()) g.drawCenteredString(font, "None of your mods have settings", width / 2, 50, 0xA0A0A0);
+            super.render(g, mx, my, pt);   // the blurred background
+            g.blitSprite(WINDOW, px, py, W, ph);
+            g.drawString(font, "Prism", px + 16, py + 14, T.ink(), false);
+            var list = PrismHub.visible();
+            String count = list.size() + (list.size() == 1 ? " mod" : " mods");
+            g.drawString(font, count, px + W - 16 - font.width(count), py + 14, T.faded(), false);
+            dotted(g, px + 12, py + 30, W - 24);
+            int y = py + 38;
+            for (var e : list) {
+                boolean hov = in(mx, my, px + 12, y, W - 24, ROW);
+                g.fill(px + 12, y, px + W - 12, y + ROW, hov ? 0xFF1C2230 : T.gutter());
+                g.fill(px + 12, y + ROW - 1, px + W - 12, y + ROW, T.gutterLine());
+                e.logo().draw(g, px + 20, y + 7, 28, 1f);
+                g.drawString(font, e.title(), px + 58, y + 10, T.ink(), false);
+                g.drawString(font, font.plainSubstrByWidth(info(e), W - 58 - 100), px + 58, y + 23, T.faded(), false);
+                button(g, px + W - 12 - 8 - 56, y + (ROW - 20) / 2, 56, "Open", mx, my, false);
+                y += ROW + 4;
+            }
+            if (list.isEmpty()) g.drawString(font, "None of your mods have settings", px + 20, py + 46, T.faded(), false);
+            dotted(g, px + 12, py + ph - 36, W - 24);
+            button(g, px + W - 14 - 80, py + ph - 30, 80, "Done", mx, my, true);
+        }
+
+        @Override public boolean mouseClicked(double mx, double my, int b) {
+            if (b == 0) {
+                if (in(mx, my, px + W - 14 - 80, py + ph - 30, 80, 20)) { onClose(); return true; }
+                int y = py + 38;
+                for (var e : PrismHub.visible()) {
+                    if (in(mx, my, px + 12, y, W - 24, ROW)) { Minecraft.getInstance().setScreen(e.opener().apply(this)); return true; }
+                    y += ROW + 4;
+                }
+            }
+            return super.mouseClicked(mx, my, b);
         }
     }
 }

@@ -19,13 +19,17 @@ public final class Settings {
         public static Option number(String name, String description, ModConfigSpec.DoubleValue value, double min, double max, double step, String unit) { return new Option(name, description, Kind.DOUBLE, value, min, max, step, unit); }
         public static Option integer(String name, String description, ModConfigSpec.IntValue value, int min, int max, String prefix) { return new Option(name, description, Kind.INT, value, min, max, 1, prefix); }
     }
-    public record Category(String title, String description, List<Option> options) {}
+    /** A page of options. icon: the id of an item drawn beside it ("" for none). */
+    public record Category(String title, String description, List<Option> options, String icon, String group) {}
 
     private static final Map<String, List<Category>> BY_MOD = new ConcurrentHashMap<>();
 
     /** Add a page of options for a mod. */
-    public static void category(String modId, String title, String description, List<Option> options) {
-        BY_MOD.computeIfAbsent(modId, k -> new CopyOnWriteArrayList<>()).add(new Category(title, description, List.copyOf(options)));
+    public static void category(String modId, String title, String description, List<Option> options) { category(modId, title, description, options, ""); }
+    public static void category(String modId, String title, String description, List<Option> options, String icon) { category(modId, title, description, options, icon, ""); }
+    /** group: the tab it is listed under in the side strip (empty: a tab of its own). */
+    public static void category(String modId, String title, String description, List<Option> options, String icon, String group) {
+        BY_MOD.computeIfAbsent(modId, k -> new CopyOnWriteArrayList<>()).add(new Category(title, description, List.copyOf(options), icon, group));
     }
     public static List<Category> of(String modId) { return BY_MOD.getOrDefault(modId, List.of()); }
 }
