@@ -24,6 +24,12 @@ public final class SettingsClient {
     /** Put the mod's settings behind its Config button in the mod list. Call from the mod's constructor, on the client only. */
     public static void install(ModContainer container, String modId, String title) {
         container.registerExtensionPoint(IConfigScreenFactory.class, (c, parent) -> new Page(parent, modId, title));
+        // and the mod appears in the hub (the one screen for all the mods), with its logo textures/gui/hub_logo.png if it has one and the first line of its description
+        String tagline = net.neoforged.fml.ModList.get().getModContainerById(modId).map(m -> m.getModInfo().getDescription()).map(d -> d.strip().split("\\R")[0]).orElse("");
+        var logoTexture = net.minecraft.resources.ResourceLocation.fromNamespaceAndPath(modId, "textures/gui/hub_logo.png");
+        dev.phi.prismlib.hub.PrismHub.register(new dev.phi.prismlib.hub.PrismHub.Entry(modId, title, tagline,
+                (g, x, y, size, alpha) -> { var rm = net.minecraft.client.Minecraft.getInstance().getResourceManager(); (rm.getResource(logoTexture).isPresent() ? dev.phi.prismlib.hub.PrismHub.texture(logoTexture) : dev.phi.prismlib.hub.PrismHub.letter(title)).draw(g, x, y, size, alpha); },
+                parent -> new Page(parent, modId, title)));
     }
 
     private static final class Page extends net.minecraft.client.gui.screens.options.OptionsSubScreen {
