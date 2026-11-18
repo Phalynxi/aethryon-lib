@@ -1,6 +1,6 @@
 # Prism Lib
 
-A shared library for Phalynxi's mods (NeoForge 1.21.1). Mods depend on this and not on each other: a mod registers what it knows, other mods read it, and every question has an answer that works with vanilla alone.
+A shared library for Phalynxi's mods (NeoForge 1.21.1, version 1.0). Mods depend on this and not on each other: a mod registers what it knows, other mods read it, and every question has an answer that works with vanilla alone.
 
 ## What is in it
 
@@ -17,6 +17,11 @@ A shared library for Phalynxi's mods (NeoForge 1.21.1). Mods depend on this and 
 
 Add it as a `compileOnly` dependency and declare `prismlib` as a required dependency in `neoforge.mods.toml`. Register providers in your mod constructor with `Services.register(Type.class, provider, priority, modId)`; read with `PrismApi`.
 
-Planned: grid and field simulation toolkit, a settings API, worldgen helpers.
+- **Settings and the hub** (`Settings`, `SettingsClient`, `PrismHub`): a mod lists its options as pages in groups (with item icons) and gets its own window in its own colours
+  (`ThemedSettingsScreen.Theme`: sky, sun, slate); every mod that does this appears in the hub, the one window behind the button on the title, pause and options screens.
+  A mod's logo is `textures/gui/hub_logo.png` (square, or a tall strip of square frames that is played as an animation).
+- **Grids**: a shallow-water solver and field grids.
+
+Planned: worldgen helpers.
 
 MIT licensed.
